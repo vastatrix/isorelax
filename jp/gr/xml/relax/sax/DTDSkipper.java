@@ -12,11 +12,11 @@ import org.xml.sax.*;
  */
 public class DTDSkipper implements EntityResolver {
     public InputSource resolveEntity(String publicId, String systemId) {
-	if (!systemId.endsWith(".dtd")) {
-	    return (null);
-	}
-	StringReader reader = new StringReader("");
-	InputSource is = new InputSource(reader);
-	return (is);
+        if (!systemId.endsWith(".dtd")) {
+            return (null);
+        }
+        StringReader reader = new StringReader("");
+        InputSource is = new InputSource(reader);
+        return (is);
     }
 }

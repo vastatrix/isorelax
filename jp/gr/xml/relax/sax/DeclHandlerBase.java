@@ -15,22 +15,22 @@ public class DeclHandlerBase implements DeclHandler {
     }
 
     public void attributeDecl(
-	String eName,
-	String aName,
-	String type,
-	String valueDefault,
-	String value
-    ) throws SAXException {
+        String eName,
+        String aName,
+        String type,
+        String valueDefault,
+        String value)
+        throws SAXException {
     }
 
     public void internalEntityDecl(String name, String value)
-	throws SAXException {
+        throws SAXException {
     }
 
     public void externalEntityDecl(
-	String name,
-	String publicId,
-	String systemId
-    ) throws SAXException {
+        String name,
+        String publicId,
+        String systemId)
+        throws SAXException {
     }
 }

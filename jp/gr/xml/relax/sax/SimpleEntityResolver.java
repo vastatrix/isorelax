@@ -23,94 +23,95 @@ public class SimpleEntityResolver implements EntityResolver {
     }
 
     public SimpleEntityResolver(String name, String uri) {
-	_init(new String[][] { {name, uri} }, null);
+        _init(new String[][] { { name, uri }
+        }, null);
     }
 
     public SimpleEntityResolver(String[][] systemIds) {
-	_init(systemIds, null);
+        _init(systemIds, null);
     }
 
     public SimpleEntityResolver(String[][] systemIds, String[][] publicIds) {
-	_init(systemIds, publicIds);
+        _init(systemIds, publicIds);
     }
 
     private void _init(String[][] systemIds, String[][] publicIds) {
-	if (systemIds != null) {
-	    List list = new ArrayList();
-	    for (int i = 0;i < systemIds.length;i++) {
-		String systemId = systemIds[i][0];
-		addSystemId(systemId, systemIds[i][1]);
-	    }
-	}
-	if (publicIds != null) {
-	    for (int i = 0;i < publicIds.length;i++) {
-		addPublicId(publicIds[i][0], publicIds[i][1]);
-	    }
-	}
+        if (systemIds != null) {
+            List list = new ArrayList();
+            for (int i = 0; i < systemIds.length; i++) {
+                String systemId = systemIds[i][0];
+                addSystemId(systemId, systemIds[i][1]);
+            }
+        }
+        if (publicIds != null) {
+            for (int i = 0; i < publicIds.length; i++) {
+                addPublicId(publicIds[i][0], publicIds[i][1]);
+            }
+        }
     }
 
     public void addSystemId(String systemId, String uri) {
-	systemIds_.put(systemId, uri);
-	relativeSystemIds_.add(systemId);
+        systemIds_.put(systemId, uri);
+        relativeSystemIds_.add(systemId);
     }
 
     public void addPublicId(String publicId, String uri) {
-	publicIds_.put(publicId, uri);
+        publicIds_.put(publicId, uri);
     }
 
     public InputSource resolveEntity(String publicId, String systemId) {
-	if (systemId != null) {
-	    if (_isExist(systemId)) {
-		return (new InputSource(systemId));
-	    }
-	}
-	if (publicId != null) {
-	    String uri = (String)publicIds_.get(publicId);
-	    if (uri != null) {
-		return (new InputSource(uri));
-	    } else {
-		return (null);
-	    }
-	}
-	if (systemId != null) {
-	    String uri = _getURIBySystemId(systemId);
-	    if (uri != null) {
-		return (new InputSource(uri));
-	    } else {
-		return (new InputSource(systemId));
-	    }
-	} else {
-	    return (null);
-	}
+        if (systemId != null) {
+            if (_isExist(systemId)) {
+                return (new InputSource(systemId));
+            }
+        }
+        if (publicId != null) {
+            String uri = (String) publicIds_.get(publicId);
+            if (uri != null) {
+                return (new InputSource(uri));
+            } else {
+                return (null);
+            }
+        }
+        if (systemId != null) {
+            String uri = _getURIBySystemId(systemId);
+            if (uri != null) {
+                return (new InputSource(uri));
+            } else {
+                return (new InputSource(systemId));
+            }
+        } else {
+            return (null);
+        }
     }
 
     private boolean _isExist(String uri) {
-	try {
-	    URL url = new URL(uri);
-	    if ("file".equals(url.getProtocol())) {
-		InputStream in = url.openStream();
-		in.close();
-		return (true);
-	    } else {
-		return (false);	// XXX : http
-	    }
-	} catch (IOException e) {
-	    return (false);
-	}
+        try {
+            URL url = new URL(uri);
+            if ("file".equals(url.getProtocol())) {
+                InputStream in = url.openStream();
+                in.close();
+                return (true);
+            } else {
+                return (false); // XXX : http
+            }
+        } catch (IOException e) {
+            return (false);
+        }
     }
 
     private String _getURIBySystemId(String systemId) {
-	String uri = (String)systemIds_.get(systemId);
-	if (uri != null) {
-	    return (uri);
-	}
-	int size = relativeSystemIds_.size();
-	for (int i = 0;i < size;i++) {
-	    String relativeId = (String)relativeSystemIds_.get(i);
-	    if (systemId.endsWith(relativeId)) {
-		return ((String)systemIds_.get(relativeId));
-	    }
-	}
-	return (null);
+        String uri = (String) systemIds_.get(systemId);
+        if (uri != null) {
+            return (uri);
+        }
+        int size = relativeSystemIds_.size();
+        for (int i = 0; i < size; i++) {
+            String relativeId = (String) relativeSystemIds_.get(i);
+            if (systemId.endsWith(relativeId)) {
+                return ((String) systemIds_.get(relativeId));
+            }
+        }
+        return (null);
     }
 }

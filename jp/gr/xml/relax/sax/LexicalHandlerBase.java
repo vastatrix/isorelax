@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
  */
 public class LexicalHandlerBase implements LexicalHandler {
     public void startDTD(String name, String publidId, String systemID)
-	throws SAXException {
+        throws SAXException {
     }
 
     public void endDTD() throws SAXException {
