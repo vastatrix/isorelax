@@ -1,11 +1,4 @@
 package org.iso_relax.jaxp;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.SAXParser;
-
 import org.iso_relax.verifier.Verifier;
 import org.xml.sax.HandlerBase;
 import org.xml.sax.InputSource;
@@ -16,6 +9,12 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Wrapper SAXParser with validation through JARV API. For the present, SAX1
@@ -31,7 +30,6 @@ class ValidatingSAXParser extends SAXParser
     /**
      * creates a new instance with an internal SAXParser and Schema.
      * @param wrapped internal SAXParser
-     * @param schema  compiled schema. 
      */
     public ValidatingSAXParser(SAXParser wrapped, Verifier verifier)
     {
@@ -65,12 +63,9 @@ class ValidatingSAXParser extends SAXParser
         return _WrappedParser.isNamespaceAware();
     }
 
-    /**
-     * returns true always
-     */
     public boolean isValidating()
     {
-        return true;
+        return _WrappedParser.isValidating();
     }
 
     /**

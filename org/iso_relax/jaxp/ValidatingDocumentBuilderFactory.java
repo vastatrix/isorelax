@@ -1,11 +1,11 @@
 package org.iso_relax.jaxp;
 
+import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.VerifierConfigurationException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.iso_relax.verifier.Schema;
-import org.iso_relax.verifier.VerifierConfigurationException;
 
 /**
  * Wraps another {@link DocumentBuilderFactory} and adds validation capability.
@@ -74,6 +74,14 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     public Object getAttribute(String name)
     {
         return _WrappedFactory.getAttribute(name);
+    }
+
+    public void setFeature(String name, boolean value) throws ParserConfigurationException {
+        throw new ParserConfigurationException();
+    }
+
+    public boolean getFeature(String name) throws ParserConfigurationException {
+        throw new ParserConfigurationException();
     }
 
     public boolean isValidating()
