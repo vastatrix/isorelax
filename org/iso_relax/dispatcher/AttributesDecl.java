@@ -22,48 +22,45 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.iso_relax.dispatcher.impl;
+package org.iso_relax.dispatcher;
 
-import org.iso_relax.dispatcher.SchemaProvider;
-import org.iso_relax.dispatcher.IslandSchema;
-import org.iso_relax.dispatcher.IslandVerifier;
-import org.xml.sax.ErrorHandler;
-import java.util.Map;
-import java.util.Iterator;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 /**
- * default implementation of SchemaProvider.
+ * represents a constraint for XML attributes.
  * 
- * Applications can use this class as the base class of their own SchemaProvider.
+ * This interface also provides feature/property mechanism to encourage
+ * communications between two different implementations.
  * 
  * @author		<a href="mailto:k-kawa@bigfoot.com">Kohsuke KAWAGUCHI</a>
  */
-public abstract class AbstractSchemaProviderImpl implements SchemaProvider {
-	
-	/** a map from primary namespace to IslandSchema. */
-	protected final Map schemata = new java.util.HashMap();
-	
-	/** adds a new IslandSchema.
-	 *
-	 * the caller should make sure that the given uri is not defined already.
+public interface AttributesDecl {
+	/**
+	 * gets name of this rule.
+	 * every AttributesDecl has a unique name within the schema.
 	 */
-	public void addSchema( String uri, IslandSchema s ) {
-		if( schemata.containsKey(uri) )
-			throw new IllegalArgumentException();
-		schemata.put( uri, s );
-	}
-			 
-	public IslandSchema getSchemaByNamespace( String uri ) {
-		return (IslandSchema)schemata.get(uri);
-	}
+	String getName();
 	
-	public Iterator iterateNamespace() {
-		return schemata.keySet().iterator();
-	}
+	/** looks up the value of a feature
+	 * 
+	 * this method works like getFeature method of SAX.
+	 * featureName is a fully-qualified URI.
+	 * 
+	 * Implementators are encouraged to invent their own features,
+	 * by using their own URIs.
+	 */
+	boolean getFeature( String featureName )
+		throws SAXNotRecognizedException,SAXNotSupportedException;
 	
-	public IslandSchema[] getSchemata() {
-		IslandSchema[] r = new IslandSchema[schemata.size()];
-		schemata.values().toArray(r);
-		return r;
-	}
+	/** looks up the value of a property
+	 * 
+	 * this method works like getProperty method of SAX.
+	 * propertyName is a fully-qualified URI.
+	 * 
+	 * Implementators are encouraged to invent their own properties,
+	 * by using their own URIs.
+	 */
+	Object getProperty( String propertyName )
+		throws SAXNotRecognizedException,SAXNotSupportedException;
 }
