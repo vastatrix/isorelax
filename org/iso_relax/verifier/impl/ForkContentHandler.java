@@ -1,3 +1,4 @@
+package org.iso_relax.verifier.impl;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
