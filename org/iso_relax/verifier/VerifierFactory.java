@@ -258,8 +258,14 @@ public abstract class VerifierFactory {
      *			</tr>
      *		</tbody></table>
      *
+     * 
+     * @return
+     *		a non-null valid VerifierFactory instance.
+     * 
+     * @exception VerifierConfigurationException
+     *		if no implementation is available for the specified language.
      */
-    public static VerifierFactory newInstance(String language) {
+    public static VerifierFactory newInstance(String language) throws VerifierConfigurationException {
 
 		Iterator itr = providers( VerifierFactoryLoader.class );
 		while(itr.hasNext()) {
@@ -269,7 +275,7 @@ public abstract class VerifierFactory {
 				if(factory!=null)	return factory;
 			} catch (Throwable t) {}	// ignore any error
 		}
-		return null;
+		throw new VerifierConfigurationException("no validation engine available for: "+language);
 	}
 
     private static HashMap providerMap = new HashMap();
