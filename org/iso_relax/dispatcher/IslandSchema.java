@@ -99,4 +99,3 @@ public interface IslandSchema {
 	void bind( SchemaProvider provider, ErrorHandler errorHandler )
 		throws SAXException;
 }
-

@@ -41,4 +41,3 @@ public interface IslandSchemaReader extends org.xml.sax.ContentHandler {
 	 */
 	IslandSchema getSchema();
 }
-

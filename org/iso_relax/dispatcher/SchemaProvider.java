@@ -58,4 +58,3 @@ public interface SchemaProvider {
 	 */
 	IslandSchema[] getSchemata();
 }
-

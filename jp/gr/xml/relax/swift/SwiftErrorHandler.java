@@ -15,22 +15,22 @@ import jp.co.swiftinc.relax.verifier.WarningException;
  * @author  ASAMI, Tomoharu (asami@zeomtech.com)
  */
 public class SwiftErrorHandler implements RELAXErrorHandler {
-    private ErrorHandler handler_;
+    private SwiftVerifier verifier_;
 
-    public SwiftErrorHandler(ErrorHandler handler) {
-	handler_ = handler;
+    public SwiftErrorHandler(SwiftVerifier verifier) {
+	verifier_ = verifier;
     }
 
     public void error(NotValidException e) {
 	try {
-	    handler_.error(new SAXParseException(e.getMessage(), e.loc, e));
+	    verifier_.getErrorHandler().			error(new SAXParseException(e.getMessage(), e.loc, e));
 	} catch (SAXException ee) {
 	}
     }
 
     public void warning(WarningException e) {
 	try {
-	    handler_.warning(new SAXParseException(e.getMessage(), e.loc, e));
+	    verifier_.getErrorHandler().			warning(new SAXParseException(e.getMessage(), e.loc, e));
 	} catch (SAXException ee) {
 	}
     }

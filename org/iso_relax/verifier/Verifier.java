@@ -1,5 +1,6 @@
 package org.iso_relax.verifier;
 
+import java.io.File;
 import java.io.IOException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.EntityResolver;
@@ -155,7 +156,19 @@ public interface Verifier {
      *		<b>false</b> if otherwise.
      */
     boolean verify(InputSource source) throws SAXException, IOException;
-
+    
+    /**
+     * validates an XML document.
+     *
+     * @param file
+     *		File to be validated
+     * 
+     * @return
+     *		<b>true</b> if the document is valid.
+     *		<b>false</b> if otherwise.
+     */
+    boolean verify(File file) throws SAXException, IOException;
+    
     /**
      * validates an XML document.
      * 
@@ -175,8 +188,7 @@ public interface Verifier {
      *		<b>true</b> if the document is valid.
      *		<b>false</b> if otherwise.
      */
-    boolean verify(Node node)
-		throws SAXException;
+    boolean verify(Node node) throws SAXException;
 
     /**
      * Gets a VerifierHandler.

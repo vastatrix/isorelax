@@ -74,4 +74,4 @@ public interface IslandVerifier extends ContentHandler {
 	 *		when every elementDecl was failed, then an empty array is passed.
 	 */
 	public void endChildIsland( String uri, ElementDecl assignedDecls[] ) throws SAXException;
-}
+}

@@ -133,7 +133,7 @@ public abstract class VerifierImpl implements Verifier
 	private VerifierFilter filter;
 	public VerifierFilter getVerifierFilter() throws SAXException {
 		if(filter==null)
-			filter = new VerifierFilterImpl(getVerifierHandler());
+			filter = new VerifierFilterImpl(this);
 		return filter;
 	}
 }

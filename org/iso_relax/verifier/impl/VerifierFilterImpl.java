@@ -32,7 +32,7 @@ import org.xml.sax.EntityResolver;
  */
 public class VerifierFilterImpl extends XMLFilterImpl implements VerifierFilter {
 	
-	public VerifierFilterImpl( Verifier _verifier ) {
+	public VerifierFilterImpl( Verifier _verifier ) throws SAXException {
 		this.verifier = _verifier;
 		this.core = verifier.getVerifierHandler();
 	}

@@ -38,10 +38,11 @@ public abstract class VerifierFactory {
      * 
      * @param uri URI of a schema file
      */
-    public abstract Verifier newVerifier(String uri)
-	throws VerifierConfigurationException,
-	       SAXException,
-	       IOException;
+    public Verifier newVerifier(String uri)
+		throws VerifierConfigurationException, SAXException, IOException {
+		
+		return compileSchema(uri).newVerifier();
+	}
 
     /**
      * parses a schema from the specified file and returns a Verifier object
@@ -50,11 +51,9 @@ public abstract class VerifierFactory {
      * @param uri File of a schema file
      */
     public Verifier newVerifier(File file)
-	throws VerifierConfigurationException,
-	       SAXException,
-	       IOException {
+		throws VerifierConfigurationException, SAXException, IOException {
 
-	return (newVerifier(file.toURL().toExternalForm()));
+		return compileSchema(file).newVerifier();
     }
 
 	/**
@@ -64,7 +63,7 @@ public abstract class VerifierFactory {
 	public Verifier newVerifier(InputStream stream)
 		throws VerifierConfigurationException, SAXException, IOException {
 		
-		return newVerifier( stream, null );
+		return compileSchema( stream, null ).newVerifier();
 	}
 	
 	/**
@@ -77,9 +76,7 @@ public abstract class VerifierFactory {
 	public Verifier newVerifier(InputStream stream, String systemId )
 		throws VerifierConfigurationException, SAXException, IOException {
 		
-		InputSource is = new InputSource(stream);
-		is.setSystemId(systemId);
-		return newVerifier(is);
+		return compileSchema(stream,systemId).newVerifier();
 	}
 	
     /**
@@ -88,11 +85,11 @@ public abstract class VerifierFactory {
      *
      * @param source InputSource of a schema file
      */
-    public abstract Verifier newVerifier(InputSource source)
-	throws VerifierConfigurationException,
-	       SAXException,
-	       IOException;
-
+    public Verifier newVerifier(InputSource source)
+		throws VerifierConfigurationException, SAXException, IOException {
+		
+		return compileSchema(source).newVerifier();
+	}
 	
 	/**
 	 * processes a schema into a Schema object, which is a compiled representation
@@ -119,8 +116,11 @@ public abstract class VerifierFactory {
 	 * @param	url
 	 *		A source url of a schema file to be compiled.
 	 */
-	public abstract Schema compileSchema( String url )
-		throws VerifierConfigurationException, SAXException, IOException;
+	public Schema compileSchema( String url )
+		throws VerifierConfigurationException, SAXException, IOException {
+		
+		return compileSchema( new InputSource(url) );
+	}
 
 	/**
 	 * processes a schema into a Schema object, which is a compiled representation
@@ -167,10 +167,14 @@ public abstract class VerifierFactory {
 	 * @param	file
 	 *		A schema file to be compiled
 	 */
-	public Schema compileSchema( File file )
+	public Schema compileSchema( File f )
 		throws VerifierConfigurationException, SAXException, IOException {
 	
-		return compileSchema(file.toURL().toExternalForm());
+		String uri = "file:" + f.getAbsolutePath();
+		if (File.separatorChar == '\\') {
+			uri = uri.replace('\\', '/');
+		}
+        return compileSchema(new InputSource(uri));
 	}
 	
 	
@@ -179,8 +183,15 @@ public abstract class VerifierFactory {
      *
      * @param feature feature name
      */
-    public abstract boolean isFeature(String feature)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public boolean isFeature(String feature)
+		throws SAXNotRecognizedException, SAXNotSupportedException {
+		
+		if (Verifier.FEATURE_HANDLER.equals(feature) ||
+			Verifier.FEATURE_FILTER.equals(feature))
+			return true;
+		
+		throw new SAXNotRecognizedException(feature);
+	}
 
     /**
      * Sets feature value
@@ -188,16 +199,22 @@ public abstract class VerifierFactory {
      * @param feature feature name
      * @param value feature value
      */
-    public abstract void setFeature(String feature, boolean value)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public void setFeature(String feature, boolean value)
+		throws SAXNotRecognizedException, SAXNotSupportedException {
+		
+		throw new SAXNotRecognizedException(feature);
+	}
 
     /**
      * Gets property value
      *
      * @param property property name
      */
-    public abstract Object getProperty(String property)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public Object getProperty(String property)
+		throws SAXNotRecognizedException, SAXNotSupportedException {
+	   
+		throw new SAXNotRecognizedException(property);
+	}
 
     /**
      * Sets property value
@@ -205,8 +222,11 @@ public abstract class VerifierFactory {
      * @param property property name
      * @param value property value
      */
-    public abstract void setProperty(String property, Object value)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public void setProperty(String property, Object value)
+		throws SAXNotRecognizedException, SAXNotSupportedException {
+		
+		throw new SAXNotRecognizedException(property);
+	}
 
 	
 	

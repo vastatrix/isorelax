@@ -198,4 +198,3 @@ public final class UXML {
 	return (new String(buffer));
     }
 }
-

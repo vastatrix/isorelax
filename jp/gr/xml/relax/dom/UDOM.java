@@ -36,4 +36,3 @@ public final class UDOM {
 	return (maker.getText());
     }	
 }
-

@@ -60,4 +60,3 @@ public class DOMVisitorException extends RuntimeException {
 	}
     }
 }
-

@@ -58,4 +58,3 @@ public class VerifierConfigurationException extends Exception {
 	}
     }
 }
-

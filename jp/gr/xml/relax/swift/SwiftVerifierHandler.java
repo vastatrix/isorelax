@@ -3,6 +3,7 @@ package jp.gr.xml.relax.swift;
 import org.iso_relax.verifier.VerifierHandler;
 import org.xml.sax.*;
 import jp.co.swiftinc.relax.verifier.RELAXNormalHandler;
+import jp.co.swiftinc.relax.verifier.RELAXErrorHandler;
 import jp.co.swiftinc.relax.verifier.NotValidException;
 import jp.co.swiftinc.relax.schema.Grammar;
 
@@ -18,8 +19,9 @@ public class SwiftVerifierHandler implements VerifierHandler {
     private boolean isActive_ = true;
     private RELAXNormalHandler handler_;
 
-    public SwiftVerifierHandler(Grammar grammar) {
+    public SwiftVerifierHandler(Grammar grammar,RELAXErrorHandler errorHandler) {
 	handler_ = new RELAXNormalHandler(grammar);
+	handler_.setErrorHandler(errorHandler);
     }
 
     public boolean isValid() throws IllegalStateException {
@@ -133,4 +135,3 @@ public class SwiftVerifierHandler implements VerifierHandler {
 	handler_.skippedEntity(name);
     }
 }
-
