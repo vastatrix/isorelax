@@ -34,7 +34,7 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException
     {
         if(_WrappedFactory.isValidating())
-            return new RelaxDocumentBuilder(_WrappedFactory.newDocumentBuilder(), _Schema);
+            return new ValidatingDocumentBuilder(_WrappedFactory.newDocumentBuilder(), _Schema);
         else //if validation is disabled, we simply return the implementation of wrapped DocumentBuilder
             return _WrappedFactory.newDocumentBuilder();
     }
@@ -84,8 +84,8 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
      * creates a new instance that wraps the installed DocumentBuilderFactory
      * @param schema the compiled Schema object. It can not be null.
      */
-    public static RelaxDocumentBuilderFactory newInstance(Schema schema)
+    public static ValidatingDocumentBuilderFactory newInstance(Schema schema)
     {
-        return new RelaxDocumentBuilderFactory(DocumentBuilderFactory.newInstance(), schema);
+        return new ValidatingDocumentBuilderFactory(DocumentBuilderFactory.newInstance(), schema);
     }    
 }

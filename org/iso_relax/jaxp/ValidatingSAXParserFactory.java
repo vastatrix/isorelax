@@ -38,7 +38,7 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException
     {
         if(_WrappedFactory.isValidating())
-            return new RelaxSAXParser(_WrappedFactory.newSAXParser(), _Schema);
+            return new ValidatingSAXParser(_WrappedFactory.newSAXParser(), _Schema);
         else
             return _WrappedFactory.newSAXParser();
     }
@@ -72,8 +72,8 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
      * creates a new instance that wraps the installed DocumentBuilderFactory
      * @param schema the compiled Schema object. It can not be null.
      */
-    public static RelaxSAXParserFactory newInstance(Schema schema)
+    public static ValidatingSAXParserFactory newInstance(Schema schema)
     {
-        return new RelaxSAXParserFactory(SAXParserFactory.newInstance(), schema);
+        return new ValidatingSAXParserFactory(SAXParserFactory.newInstance(), schema);
     }    
 }
