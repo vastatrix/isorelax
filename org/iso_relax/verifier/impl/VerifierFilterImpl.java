@@ -5,6 +5,8 @@ import org.xml.sax.helpers.XMLFilterImpl;
 import org.xml.sax.SAXException;
 import org.xml.sax.Locator;
 import org.xml.sax.Attributes;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.EntityResolver;
 
 /**
  * plain vanilla {@link VerifierFilter} implementation.
@@ -30,16 +32,35 @@ import org.xml.sax.Attributes;
  */
 public class VerifierFilterImpl extends XMLFilterImpl implements VerifierFilter {
 	
-	public VerifierFilterImpl( VerifierHandler _core ) {
-		this.core = _core;
+	public VerifierFilterImpl( Verifier _verifier ) {
+		this.verifier = _verifier;
+		this.core = verifier.getVerifierHandler();
 	}
 	
-	protected VerifierHandler core;
+	private final Verifier verifier;
+	private final VerifierHandler core;
 
 	
 	public boolean isValid() {
 		return core.isValid();
 	}
+	
+	public void setErrorHandler( ErrorHandler handler ) {
+		super.setErrorHandler(handler);
+		// we need to call the setErrorHandler method of the verifier,
+		// so that the verifier handler will use this error handler from now on.
+		verifier.setErrorHandler(handler);
+	}
+	public void setEntityResolver( EntityResolver resolver ) {
+		super.setEntityResolver(resolver);
+		verifier.setEntityResolver(resolver);
+	}
+
+	//
+	//
+	//	ContentHandler events
+	//
+	//
 	
 	public void setDocumentLocator (Locator locator) {
 		core.setDocumentLocator(locator);
