@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 import java.net.URL;
 import org.xml.sax.InputSource;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -202,9 +203,28 @@ public abstract class VerifierFactory {
 
 	
 	
+	private EntityResolver resolver = null;
+	
+	/**
+	 * Sets an EntityResolver
+	 * 
+	 * This entity resolver is used to resolve entities encountered while
+	 * parsing a schema.
+	 */
+	public void setEntityResolver( EntityResolver _resolver ) {
+		this.resolver = _resolver;
+	}
+	
+	/**
+	 * Gets the current entity resolver, which was set by
+	 * the <code>SetEntityResolver</code> method.
+	 */
+	public EntityResolver getEntityResolver() {
+		return resolver;
+	}
 	
     /**
-     * creates a new instance of a VerifierFactory.
+     * Creates a new instance of a VerifierFactory.
      * 
      * @deprecated
      */

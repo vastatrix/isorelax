@@ -11,6 +11,7 @@ import org.xml.sax.ContentHandler;
  * 
  * <p>
  * The implementation validates incoming SAX events.
+ * The application can check the result by calling the isValid method.
  *
  * @since   Feb. 23, 2001
  * @version Feb. 24, 2001
@@ -18,11 +19,15 @@ import org.xml.sax.ContentHandler;
  */
 public interface VerifierHandler extends ContentHandler {
 	/**
-	 * checks if the document was valid.
+	 * Checks if the document was valid.
 	 * 
 	 * <p>
 	 * This method can be only called after this handler receives
-	 * the endDocument event.
+	 * the <code>endDocument</code> event.
+	 * 
+	 * <p>
+	 * If you need to know the error at an earlier moment,
+	 * you should set an error handler to {@link Verifier}.
 	 * 
 	 * @return
 	 *		<b>true</b> if the document was valid,
