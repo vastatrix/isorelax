@@ -1,11 +1,11 @@
 package jp.gr.xml.relax.swift;
 
-import org.xml.sax.ErrorHandler;
+import jp.co.swiftinc.relax.verifier.NotValidException;
+import jp.co.swiftinc.relax.verifier.RELAXErrorHandler;
+import jp.co.swiftinc.relax.verifier.WarningException;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import jp.co.swiftinc.relax.verifier.RELAXErrorHandler;
-import jp.co.swiftinc.relax.verifier.NotValidException;
-import jp.co.swiftinc.relax.verifier.WarningException;
 
 /**
  * SwiftErrorHandler

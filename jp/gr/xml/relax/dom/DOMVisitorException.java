@@ -1,8 +1,7 @@
 package jp.gr.xml.relax.dom;
 
-import java.io.PrintWriter;
 import java.io.PrintStream;
-import org.w3c.dom.*;
+import java.io.PrintWriter;
 
 /**
  * DOMVisitorException

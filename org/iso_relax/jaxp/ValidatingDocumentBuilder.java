@@ -1,11 +1,12 @@
 package org.iso_relax.jaxp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
+
+import org.iso_relax.verifier.Verifier;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -13,10 +14,9 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import org.iso_relax.verifier.Verifier;
-
 /**
- * Adds features to DocumentBuilder about validation through iso_relax API.
+ * Wrapper DocumentBuilder with validation through JARV API.
+ * 
  * @author Daisuke OKAJIMA
  */
 class ValidatingDocumentBuilder extends DocumentBuilder
@@ -29,7 +29,7 @@ class ValidatingDocumentBuilder extends DocumentBuilder
      * @param wrapped internal DOM parser
      * @param schema  compiled schema. 
      */
-    protected ValidatingDocumentBuilder(DocumentBuilder wrapped, Verifier verifier)
+    public ValidatingDocumentBuilder(DocumentBuilder wrapped, Verifier verifier)
     {
         _WrappedBuilder = wrapped;
         _Verifier = verifier;

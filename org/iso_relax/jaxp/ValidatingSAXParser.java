@@ -1,28 +1,26 @@
 package org.iso_relax.jaxp;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.ParserConfigurationException;
+
+import org.iso_relax.verifier.Verifier;
+import org.xml.sax.HandlerBase;
+import org.xml.sax.InputSource;
 import org.xml.sax.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.XMLFilter;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.HandlerBase;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.iso_relax.verifier.Verifier;
-
 /**
- * Adds features to SAXParser about validation through iso_relax API.
- * For the present, SAX1 features are not supported.
+ * Wrapper SAXParser with validation through JARV API. For the present, SAX1
+ * features are not supported.
+ * 
  * @author Daisuke OKAJIMA
  */
 class ValidatingSAXParser extends SAXParser
@@ -35,7 +33,7 @@ class ValidatingSAXParser extends SAXParser
      * @param wrapped internal SAXParser
      * @param schema  compiled schema. 
      */
-    protected ValidatingSAXParser(SAXParser wrapped, Verifier verifier)
+    public ValidatingSAXParser(SAXParser wrapped, Verifier verifier)
     {
         _WrappedParser = wrapped;
         _Verifier = verifier;

@@ -25,9 +25,9 @@
 package org.iso_relax.dispatcher;
 
 import java.util.Iterator;
-import java.util.Set;
-import org.xml.sax.SAXException;
+
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
 
 /**
  * represents a schema that validates one island.

@@ -1,9 +1,9 @@
 package org.iso_relax.verifier.impl;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.Locator;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
 
 /**
  * ContentHandler that "forks" the incoming SAX2 events to

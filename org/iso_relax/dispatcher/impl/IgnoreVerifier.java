@@ -24,14 +24,13 @@
  */
 package org.iso_relax.dispatcher.impl;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
-import org.iso_relax.dispatcher.IslandVerifier;
-import org.iso_relax.dispatcher.IslandSchema;
 import org.iso_relax.dispatcher.Dispatcher;
 import org.iso_relax.dispatcher.ElementDecl;
+import org.iso_relax.dispatcher.IslandSchema;
+import org.iso_relax.dispatcher.IslandVerifier;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * ignores namespaces which have no associated grammar.

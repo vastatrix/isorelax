@@ -24,9 +24,9 @@
  */
 package org.iso_relax.dispatcher;
 
-import org.xml.sax.XMLReader;
-import org.xml.sax.SAXException;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  * splits incoming SAX events to "islands", and feed events to IslandVerifier.

@@ -1,11 +1,11 @@
 package jp.gr.xml.relax.swift;
 
-import org.iso_relax.verifier.Verifier;
-import org.iso_relax.verifier.VerifierHandler;
+import jp.co.swiftinc.relax.schema.Grammar;
+
 import org.iso_relax.verifier.VerifierConfigurationException;
+import org.iso_relax.verifier.VerifierHandler;
 import org.iso_relax.verifier.impl.VerifierImpl;
 import org.xml.sax.ErrorHandler;
-import jp.co.swiftinc.relax.schema.Grammar;
 
 /**
  * SwiftVerifier

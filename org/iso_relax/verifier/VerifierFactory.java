@@ -2,17 +2,18 @@ package org.iso_relax.verifier;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.Reader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.Reader;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.Enumeration;
-import java.net.URL;
-import org.xml.sax.InputSource;
+
 import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -302,9 +303,16 @@ public abstract class VerifierFactory {
      *				<td><a href="http://www.w3.org/TR/xmlschema-1">
      *					W3C XML Schema
      *				</a></td>
+     *			</tr><tr>
+     *				<td><tt>http://www.w3.org/XML/1998/namespace</tt></td>
+     *				<td><a href="http://www.w3.org/TR/REC-xml">
+     *					XML DTD
+     *				</a></td>
      *			</tr>
      *		</tbody></table>
-     *
+     * 
+     * @param classLoader
+     *     This class loader is used to search the available implementation.
      * 
      * @return
      *		a non-null valid VerifierFactory instance.
@@ -312,9 +320,9 @@ public abstract class VerifierFactory {
      * @exception VerifierConfigurationException
      *		if no implementation is available for the specified language.
      */
-    public static VerifierFactory newInstance(String language) throws VerifierConfigurationException {
+    public static VerifierFactory newInstance(String language,ClassLoader classLoader) throws VerifierConfigurationException {
 
-		Iterator itr = providers( VerifierFactoryLoader.class );
+		Iterator itr = providers( VerifierFactoryLoader.class, classLoader );
 		while(itr.hasNext()) {
 			VerifierFactoryLoader loader = (VerifierFactoryLoader)itr.next();
 			try {
@@ -324,6 +332,10 @@ public abstract class VerifierFactory {
 		}
 		throw new VerifierConfigurationException("no validation engine available for: "+language);
 	}
+
+    public static VerifierFactory newInstance(String language) throws VerifierConfigurationException {
+        return newInstance(language,VerifierFactoryLoader.class.getClassLoader());
+    }
 
     private static HashMap providerMap = new HashMap();
 
@@ -341,8 +353,7 @@ public abstract class VerifierFactory {
 	/*
 	 * version  Service.java,v 1.1 2001/04/27 19:55:44 deweese Exp
 	 */
-    private static synchronized Iterator providers(Class cls) {
-        ClassLoader cl = cls.getClassLoader();
+    private static synchronized Iterator providers(Class cls,ClassLoader cl) {
         String serviceFile = "META-INF/services/"+cls.getName();
 
         // System.out.println("File: " + serviceFile);
@@ -364,7 +375,7 @@ public abstract class VerifierFactory {
         while (e.hasMoreElements()) {
             try {
                 URL u = (URL)e.nextElement();
-                // System.out.println("URL: " + u);
+//                System.out.println("URL: " + u);
 
                 InputStream    is = u.openStream();
                 Reader         r  = new InputStreamReader(is, "UTF-8");
@@ -394,6 +405,7 @@ public abstract class VerifierFactory {
                         v.add(obj);
                     } catch (Exception ex) {
                         // Just try the next line
+//                        ex.printStackTrace();
                     }
                     line = br.readLine();
                 }

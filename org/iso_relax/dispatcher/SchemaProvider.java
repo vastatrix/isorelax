@@ -24,7 +24,6 @@
  */
 package org.iso_relax.dispatcher;
 
-import java.util.Set;
 import java.util.Iterator;
 
 /**

@@ -24,7 +24,6 @@
  */
 package org.iso_relax.dispatcher;
 
-import java.util.Set;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 

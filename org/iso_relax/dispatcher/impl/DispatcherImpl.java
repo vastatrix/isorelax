@@ -24,18 +24,20 @@
  */
 package org.iso_relax.dispatcher.impl;
 
-import java.util.Vector;
 import java.util.Enumeration;
-import java.util.Set;
+import java.util.Vector;
+
+import org.iso_relax.dispatcher.ElementDecl;
+import org.iso_relax.dispatcher.IslandVerifier;
+import org.iso_relax.dispatcher.SchemaProvider;
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
-import org.xml.sax.XMLReader;
-import org.xml.sax.SAXException;
-import org.xml.sax.Locator;
-import org.xml.sax.Attributes;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.NamespaceSupport;
-import org.iso_relax.dispatcher.*;
 
 /**
  * reference implementation of Dispatcher interface.

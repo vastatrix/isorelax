@@ -3,15 +3,16 @@ package org.iso_relax.jaxp;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.VerifierConfigurationException;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
-import org.iso_relax.verifier.Schema;
-import org.iso_relax.verifier.VerifierConfigurationException;
-
 /**
- * Adds features to SAXParserFactory about validation through iso_relax API.
+ * Wraps another {@link SAXParserFactory} and adds validation capability.
+ * 
  * @author Daisuke OKAJIMA
  */
 public class ValidatingSAXParserFactory extends SAXParserFactory
@@ -20,13 +21,22 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
     protected Schema _Schema;
 
     private boolean validation = true;
+
+    /**
+     * creates a new instance that wraps the default DocumentBuilderFactory
+     * @param schema the compiled Schema object. It can not be null.
+     */
+    public ValidatingSAXParserFactory(Schema schema)
+    {
+        this(SAXParserFactory.newInstance(), schema);
+    }    
     
     /**
      * creates a new instance with an internal SAXParserFactory and Schema.
      * @param wrapped internal SAXParser
      * @param schema  compiled schema. 
      */
-    protected ValidatingSAXParserFactory(SAXParserFactory wrapped, Schema schema)
+    public ValidatingSAXParserFactory(SAXParserFactory wrapped, Schema schema)
     {
         _WrappedFactory = wrapped;
         _Schema = schema;
@@ -39,7 +49,7 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
      */
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException
     {
-        if(_WrappedFactory.isValidating()) {
+        if(isValidating()) {
             try {
                   return new ValidatingSAXParser(
                       _WrappedFactory.newSAXParser(),
@@ -77,12 +87,4 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
     public void setValidating(boolean validating)
     { validation = validating; }
 
-    /**
-     * creates a new instance that wraps the installed DocumentBuilderFactory
-     * @param schema the compiled Schema object. It can not be null.
-     */
-    public static ValidatingSAXParserFactory newInstance(Schema schema)
-    {
-        return new ValidatingSAXParserFactory(SAXParserFactory.newInstance(), schema);
-    }    
 }

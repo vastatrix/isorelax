@@ -24,11 +24,17 @@
  */
 package org.iso_relax.dispatcher.impl;
 
-import org.iso_relax.dispatcher.*;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXNotRecognizedException;
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.iso_relax.dispatcher.AttributesDecl;
+import org.iso_relax.dispatcher.AttributesVerifier;
+import org.iso_relax.dispatcher.ElementDecl;
+import org.iso_relax.dispatcher.IslandSchema;
+import org.iso_relax.dispatcher.IslandVerifier;
+import org.iso_relax.dispatcher.SchemaProvider;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXNotRecognizedException;
 
 /**
  * IslandSchema implementation for "ignored" island.

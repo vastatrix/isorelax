@@ -1,14 +1,39 @@
 package org.iso_relax.verifier.impl;
 
-import org.w3c.dom.*;
-import org.xml.sax.*;
-import org.xml.sax.ext.*;
-import org.xml.sax.helpers.*;
+import java.util.Enumeration;
+
+import jp.gr.xml.relax.dom.DOMVisitorException;
 import jp.gr.xml.relax.dom.IDOMVisitor;
 import jp.gr.xml.relax.dom.UDOM;
 import jp.gr.xml.relax.dom.UDOMVisitor;
-import jp.gr.xml.relax.dom.DOMVisitorException;
-import jp.gr.xml.relax.sax.*;
+import jp.gr.xml.relax.sax.DeclHandlerBase;
+import jp.gr.xml.relax.sax.LexicalHandlerBase;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Entity;
+import org.w3c.dom.EntityReference;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.Notation;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.LocatorImpl;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Generates SAX events from a DOM tree.
@@ -139,7 +164,7 @@ public class SAXEventGenerator implements IDOMVisitor {
                 String attrQName = attr.getName();
 				if(attrLocalName==null)	attrLocalName = attrQName;
                 String attrValue = attr.getValue();
-                if (attrQName.startsWith("xmlns:")) {
+                if (attrQName.startsWith("xmlns")) {
                     String prefix;
                     int index = attrQName.indexOf(':');
                     if (index == -1) {
@@ -371,6 +396,10 @@ public class SAXEventGenerator implements IDOMVisitor {
             String qName = element.getTagName();
 			if(localName==null)		localName=qName;
             content_.endElement(namespaceURI, localName, qName);
+            
+            for (Enumeration e=namespace_.getDeclaredPrefixes(); e.hasMoreElements(); )
+                content_.endPrefixMapping( (String)e.nextElement() );
+            
             namespace_.popContext();
         } catch (SAXException e) {
             _errorReport(e);

@@ -1,23 +1,24 @@
 package jp.gr.xml.relax.swift;
 
 import java.io.IOException;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-import org.iso_relax.verifier.VerifierFactory;
-import org.iso_relax.verifier.Verifier;
-import org.iso_relax.verifier.VerifierConfigurationException;
-import org.iso_relax.verifier.VerifierException;
-import org.iso_relax.verifier.Schema;
-import org.w3c.dom.Document;
+
 import jp.co.swiftinc.relax.schema.Grammar;
 import jp.co.swiftinc.relax.schema.SchemaLoader;
 import jp.co.swiftinc.relax.schema.SchemaSyntaxErrorException;
 import jp.gr.xml.relax.sax.RELAXEntityResolver;
+
+import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.VerifierConfigurationException;
+import org.iso_relax.verifier.VerifierException;
+import org.iso_relax.verifier.VerifierFactory;
+import org.iso_relax.verifier.VerifierFactoryLoader;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -27,7 +28,7 @@ import jp.gr.xml.relax.sax.RELAXEntityResolver;
  * @version Mar.  4, 2001
  * @author  ASAMI, Tomoharu (asami@zeomtech.com)
  */
-public class SwiftVerifierFactory extends VerifierFactory {
+public class SwiftVerifierFactory extends VerifierFactory implements VerifierFactoryLoader {
 	
 	public Schema compileSchema( InputSource source )
 			throws VerifierConfigurationException, SAXException {
@@ -65,5 +66,11 @@ public class SwiftVerifierFactory extends VerifierFactory {
 	}
     }
 
+    public VerifierFactory createFactory( String schemaLanguage ) {
+        if( schemaLanguage.equals("http://www.xml.gr.jp/xmlns/relaxCore"))
+            return this;
+        else
+            return null;
+    }
 
 }

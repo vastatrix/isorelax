@@ -1,11 +1,14 @@
 package jp.gr.xml.relax.swift;
 
-import org.iso_relax.verifier.VerifierHandler;
-import org.xml.sax.*;
-import jp.co.swiftinc.relax.verifier.RELAXNormalHandler;
-import jp.co.swiftinc.relax.verifier.RELAXErrorHandler;
-import jp.co.swiftinc.relax.verifier.NotValidException;
 import jp.co.swiftinc.relax.schema.Grammar;
+import jp.co.swiftinc.relax.verifier.NotValidException;
+import jp.co.swiftinc.relax.verifier.RELAXErrorHandler;
+import jp.co.swiftinc.relax.verifier.RELAXNormalHandler;
+
+import org.iso_relax.verifier.VerifierHandler;
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
 
 /**
  * SwiftVerifierHandler

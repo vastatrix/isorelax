@@ -1,6 +1,8 @@
 package org.iso_relax.verifier;
 
-import java.io.*;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 import org.xml.sax.SAXException;
 
 /**

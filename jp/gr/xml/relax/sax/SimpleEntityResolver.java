@@ -1,10 +1,15 @@
 package jp.gr.xml.relax.sax;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
-import java.io.*;
-import org.xml.sax.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /**
  * SimpleEntityResolver
@@ -37,7 +42,6 @@ public class SimpleEntityResolver implements EntityResolver {
 
     private void _init(String[][] systemIds, String[][] publicIds) {
         if (systemIds != null) {
-            List list = new ArrayList();
             for (int i = 0; i < systemIds.length; i++) {
                 String systemId = systemIds[i][0];
                 addSystemId(systemId, systemIds[i][1]);

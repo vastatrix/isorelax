@@ -24,12 +24,11 @@
  */
 package org.iso_relax.dispatcher.impl;
 
-import org.iso_relax.dispatcher.SchemaProvider;
-import org.iso_relax.dispatcher.IslandSchema;
-import org.iso_relax.dispatcher.IslandVerifier;
-import org.xml.sax.ErrorHandler;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
+
+import org.iso_relax.dispatcher.IslandSchema;
+import org.iso_relax.dispatcher.SchemaProvider;
 
 /**
  * default implementation of SchemaProvider.

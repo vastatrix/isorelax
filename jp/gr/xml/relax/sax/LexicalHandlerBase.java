@@ -1,7 +1,7 @@
 package jp.gr.xml.relax.sax;
 
-import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Base class of LexicalHandler

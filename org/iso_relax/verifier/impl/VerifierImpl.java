@@ -1,12 +1,24 @@
 package org.iso_relax.verifier.impl;
 
-import org.iso_relax.verifier.*;
-import org.xml.sax.*;
-import org.w3c.dom.Node;
 import java.io.File;
 import java.io.IOException;
-import javax.xml.parsers.SAXParserFactory;
+
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.iso_relax.verifier.Verifier;
+import org.iso_relax.verifier.VerifierConfigurationException;
+import org.iso_relax.verifier.VerifierFilter;
+import org.iso_relax.verifier.VerifierHandler;
+import org.w3c.dom.Node;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
 /**
  * Partial implementation of {@link Verifier}.

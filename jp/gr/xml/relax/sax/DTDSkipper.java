@@ -1,7 +1,9 @@
 package jp.gr.xml.relax.sax;
 
-import java.io.*;
-import org.xml.sax.*;
+import java.io.StringReader;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /**
  * DTDSkipper

@@ -1,12 +1,14 @@
 package org.iso_relax.verifier.impl;
 
-import org.iso_relax.verifier.*;
-import org.xml.sax.helpers.XMLFilterImpl;
-import org.xml.sax.SAXException;
-import org.xml.sax.Locator;
+import org.iso_relax.verifier.Verifier;
+import org.iso_relax.verifier.VerifierFilter;
+import org.iso_relax.verifier.VerifierHandler;
 import org.xml.sax.Attributes;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * plain vanilla {@link VerifierFilter} implementation.

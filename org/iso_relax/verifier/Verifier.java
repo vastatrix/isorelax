@@ -2,13 +2,14 @@ package org.iso_relax.verifier;
 
 import java.io.File;
 import java.io.IOException;
-import org.xml.sax.ErrorHandler;
+
+import org.w3c.dom.Node;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-import org.w3c.dom.Node;
 
 /**
  * An instance of this interface can validates documents.

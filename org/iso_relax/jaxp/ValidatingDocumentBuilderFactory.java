@@ -8,7 +8,7 @@ import org.iso_relax.verifier.Schema;
 import org.iso_relax.verifier.VerifierConfigurationException;
 
 /**
- * Wraps another DocumentBuilderFactory and adds validation capability.
+ * Wraps another {@link DocumentBuilderFactory} and adds validation capability.
  * 
  * @author Daisuke OKAJIMA
  */
@@ -18,13 +18,23 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     protected DocumentBuilderFactory _WrappedFactory;
     
     private boolean validation = true;
+
+    
+    /**
+     * creates a new instance that wraps the default DocumentBuilderFactory
+     * @param schema the compiled Schema object. It can not be null.
+     */
+    public ValidatingDocumentBuilderFactory(Schema schema)
+    {
+        this(DocumentBuilderFactory.newInstance(), schema);
+    }    
     
     /**
      * creates a new instance with an internal DocumentBuilderFactory and Schema.
      * @param wrapped internal DocumentBuilderFactory
      * @param schema  compiled schema. 
      */
-    protected ValidatingDocumentBuilderFactory(DocumentBuilderFactory wrapped, Schema schema)
+    public ValidatingDocumentBuilderFactory(DocumentBuilderFactory wrapped, Schema schema)
     {
         _WrappedFactory = wrapped;
         _Schema = schema;
@@ -91,13 +101,4 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     { _WrappedFactory.setIgnoringElementContentWhitespace(whitespace); }
     public void setNamespaceAware(boolean awareness)
     { _WrappedFactory.setNamespaceAware(awareness); }
-    
-    /**
-     * creates a new instance that wraps the installed DocumentBuilderFactory
-     * @param schema the compiled Schema object. It can not be null.
-     */
-    public static ValidatingDocumentBuilderFactory newInstance(Schema schema)
-    {
-        return new ValidatingDocumentBuilderFactory(DocumentBuilderFactory.newInstance(), schema);
-    }    
 }

@@ -1,10 +1,16 @@
 package jp.gr.xml.relax.sax;
 
-import org.w3c.dom.*;
-import org.xml.sax.*;
-import org.xml.sax.ext.*;
-import jp.gr.xml.relax.dom.UDOMVisitor;
 import jp.gr.xml.relax.dom.DOMVisitorException;
+import jp.gr.xml.relax.dom.UDOMVisitor;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * SAX event producer from DOM tree
