@@ -9,8 +9,10 @@ import org.xml.sax.Attributes;
 /**
  * plain vanilla {@link VerifierFilter} implementation.
  * 
+ * <p>
  * A verifier implementation can use this class to support VerifierFilter functionality.
  * 
+ * <p>
  * To use this class, implement the {@link Verifier#getVerifierFilter()} method
  * as follows:
  * <pre>
@@ -19,6 +21,10 @@ import org.xml.sax.Attributes;
  * }
  * </pre>
  *
+ * <p>
+ * Also, usually you may want to override <code>setErrorHandler</code> method so that
+ * your <code>VerifierHandler</code> will send errors to that handler.
+ * 
  * @version	$Id$
  * @author  <a href="mailto:kohsuke.kawaguchi@sun.com">Kohsuke KAWAGUCHI</a>
  */

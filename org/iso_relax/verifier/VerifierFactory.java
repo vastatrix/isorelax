@@ -32,7 +32,9 @@ public abstract class VerifierFactory {
      * that validates documents by using that schema.
      * 
      * <p>
-     * If you need to 
+     * Some of XML parsers accepts filenames as well as URLs, while others
+     * reject them. Therefore, to parse a file as a schema, you should use
+     * a File object.
      * 
      * @param uri URI of a schema file
      */
@@ -109,6 +111,11 @@ public abstract class VerifierFactory {
 	 * The obtained schema object can then be used concurrently across multiple
 	 * threads.
 	 * 
+     * <p>
+     * Some of XML parsers accepts filenames as well as URLs, while others
+     * reject them. Therefore, to parse a file as a schema, you should use
+     * a File object.
+     * 
 	 * @param	url
 	 *		A source url of a schema file to be compiled.
 	 */
