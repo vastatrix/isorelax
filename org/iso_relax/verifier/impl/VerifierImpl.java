@@ -123,6 +123,7 @@ public abstract class VerifierImpl implements Verifier
 		SAXEventGenerator generator = new SAXEventGenerator(node);
 		// generate startDocument/endDocument events
 		generator.setDocumentEmulation(true);
+		generator.setErrorHandler(errorHandler);
 		VerifierHandler handler = getVerifierHandler();
 		generator.makeEvent(handler);
 		return handler.isValid();

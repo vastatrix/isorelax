@@ -124,6 +124,8 @@ public class SAXEventGenerator implements IDOMVisitor {
             }
             String localName = element.getLocalName();
             String qName = element.getTagName();
+			if(localName==null)	localName = qName;
+			
             NamedNodeMap attrMap = element.getAttributes();
             AttributesImpl attrs = new AttributesImpl();
             int size = attrMap.getLength();
@@ -135,6 +137,7 @@ public class SAXEventGenerator implements IDOMVisitor {
                 }
                 String attrLocalName = attr.getLocalName();
                 String attrQName = attr.getName();
+				if(attrLocalName==null)	attrLocalName = attrQName;
                 String attrValue = attr.getValue();
                 if (attrQName.startsWith("xmlns:")) {
                     String prefix;
@@ -366,6 +369,7 @@ public class SAXEventGenerator implements IDOMVisitor {
             }
             String localName = element.getLocalName();
             String qName = element.getTagName();
+			if(localName==null)		localName=qName;
             content_.endElement(namespaceURI, localName, qName);
             namespace_.popContext();
         } catch (SAXException e) {
