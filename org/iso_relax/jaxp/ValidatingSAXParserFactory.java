@@ -18,6 +18,8 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
 {
     protected SAXParserFactory _WrappedFactory;
     protected Schema _Schema;
+
+    private boolean validation = true;
     
     /**
      * creates a new instance with an internal SAXParserFactory and Schema.
@@ -28,18 +30,24 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
     {
         _WrappedFactory = wrapped;
         _Schema = schema;
-        _WrappedFactory.setValidating(true); //validation is enabled initially
     }
 
     /**
      * returns a new SAX parser.
-     * If setValidating(false) is called previously, this method simply returns the implementation of wrapped SAXParser.
+     * If setValidating(false) is called previously, this method simply
+     * returns the implementation of wrapped SAXParser.
      */
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException
     {
-        if(_WrappedFactory.isValidating())
-            return new ValidatingSAXParser(_WrappedFactory.newSAXParser(), _Schema);
-        else
+        if(_WrappedFactory.isValidating()) {
+            try {
+                  return new ValidatingSAXParser(
+                      _WrappedFactory.newSAXParser(),
+                      _Schema.newVerifier());
+             } catch(VerifierConfigurationException ex) {
+                 throw new ParserConfigurationException(ex.getMessage());
+             }
+        } else
             return _WrappedFactory.newSAXParser();
     }
 
@@ -61,12 +69,13 @@ public class ValidatingSAXParserFactory extends SAXParserFactory
 
     public boolean isNamespaceAware()
     { return _WrappedFactory.isNamespaceAware(); }
-    public boolean isValidating()
-    { return _WrappedFactory.isValidating(); }
     public void setNamespaceAware(boolean awareness)
     { _WrappedFactory.setNamespaceAware(awareness); }
+    
+    public boolean isValidating()
+    { return validation; }
     public void setValidating(boolean validating)
-    { _WrappedFactory.setValidating(validating); }
+    { validation = validating; }
 
     /**
      * creates a new instance that wraps the installed DocumentBuilderFactory

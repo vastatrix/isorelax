@@ -18,8 +18,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.HandlerBase;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.iso_relax.verifier.VerifierConfigurationException;
-import org.iso_relax.verifier.Schema;
 import org.iso_relax.verifier.Verifier;
 
 /**
@@ -30,7 +28,6 @@ import org.iso_relax.verifier.Verifier;
 class ValidatingSAXParser extends SAXParser
 {
     protected SAXParser _WrappedParser;
-    protected Schema _Schema;
     protected Verifier _Verifier;
 
     /**
@@ -38,18 +35,10 @@ class ValidatingSAXParser extends SAXParser
      * @param wrapped internal SAXParser
      * @param schema  compiled schema. 
      */
-    protected ValidatingSAXParser(SAXParser wrapped, Schema schema) throws ParserConfigurationException
+    protected ValidatingSAXParser(SAXParser wrapped, Verifier verifier)
     {
         _WrappedParser = wrapped;
-        _Schema = schema;
-        try
-        {
-            _Verifier = _Schema.newVerifier();
-        }
-        catch(VerifierConfigurationException ex)
-        {
-            throw new ParserConfigurationException("a VerifierConfigurationException is raised at the creation of Verifier: " + ex.getMessage());
-        }
+        _Verifier = verifier;
     }
 
     /**

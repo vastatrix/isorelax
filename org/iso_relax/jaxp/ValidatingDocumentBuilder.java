@@ -13,8 +13,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import org.iso_relax.verifier.VerifierConfigurationException;
-import org.iso_relax.verifier.Schema;
 import org.iso_relax.verifier.Verifier;
 
 /**
@@ -24,7 +22,6 @@ import org.iso_relax.verifier.Verifier;
 class ValidatingDocumentBuilder extends DocumentBuilder
 {
     protected DocumentBuilder _WrappedBuilder;
-    protected Schema _Schema;
     protected Verifier _Verifier;
     
     /**
@@ -32,18 +29,10 @@ class ValidatingDocumentBuilder extends DocumentBuilder
      * @param wrapped internal DOM parser
      * @param schema  compiled schema. 
      */
-    protected ValidatingDocumentBuilder(DocumentBuilder wrapped, Schema schema) throws ParserConfigurationException
+    protected ValidatingDocumentBuilder(DocumentBuilder wrapped, Verifier verifier)
     {
         _WrappedBuilder = wrapped;
-        _Schema = schema;
-        try
-        {
-            _Verifier = _Schema.newVerifier();
-        }
-        catch(VerifierConfigurationException ex)
-        {
-            throw new ParserConfigurationException("a VerifierConfigurationException is raised at the creation of Verifier: " + ex.getMessage());
-        }
+        _Verifier = verifier;
     }
     
     /**

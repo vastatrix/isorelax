@@ -5,15 +5,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.VerifierConfigurationException;
 
 /**
- * Adds features to DocumentBuilderFactory about validation through iso_relax API.
+ * Wraps another DocumentBuilderFactory and adds validation capability.
+ * 
  * @author Daisuke OKAJIMA
  */
 public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
 {
     protected Schema _Schema;
     protected DocumentBuilderFactory _WrappedFactory;
+    
+    private boolean validation = true;
     
     /**
      * creates a new instance with an internal DocumentBuilderFactory and Schema.
@@ -24,18 +28,25 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     {
         _WrappedFactory = wrapped;
         _Schema = schema;
-        _WrappedFactory.setValidating(true); //validation is enabled initially
     }
 
     /**
      * returns a new DOM parser.
-     * If setValidating(false) is called previously, this method simply returns the implementation of wrapped DocumentBuilder.
+     * If setValidating(false) is called previously, this method
+     * simply returns the implementation of wrapped DocumentBuilder.
      */
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException
     {
-        if(_WrappedFactory.isValidating())
-            return new ValidatingDocumentBuilder(_WrappedFactory.newDocumentBuilder(), _Schema);
-        else //if validation is disabled, we simply return the implementation of wrapped DocumentBuilder
+        if(isValidating()) {
+            try {
+                return new ValidatingDocumentBuilder(
+                    _WrappedFactory.newDocumentBuilder(),
+                    _Schema.newVerifier());
+            } catch(VerifierConfigurationException ex) {
+                throw new ParserConfigurationException(ex.getMessage());
+            }
+        } else
+            //if validation is disabled, we simply return the implementation of wrapped DocumentBuilder
             return _WrappedFactory.newDocumentBuilder();
     }
 
@@ -55,6 +66,11 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
         return _WrappedFactory.getAttribute(name);
     }
 
+    public boolean isValidating()
+    { return validation; }
+    public void setValidating(boolean _validating)
+    { this.validation = _validating; }
+    
     public boolean isCoalescing()
     { return _WrappedFactory.isCoalescing(); }
     public boolean isExpandEntityReference()
@@ -65,8 +81,6 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     { return _WrappedFactory.isIgnoringElementContentWhitespace(); }
     public boolean isNamespaceAware()
     { return _WrappedFactory.isNamespaceAware(); }
-    public boolean isValidating()
-    { return _WrappedFactory.isValidating(); }
     public void setCoalescing(boolean coalescing)
     { _WrappedFactory.setCoalescing(coalescing); }
     public void setExpandEntityReference(boolean expandEntityRef)
@@ -77,8 +91,6 @@ public class ValidatingDocumentBuilderFactory extends DocumentBuilderFactory
     { _WrappedFactory.setIgnoringElementContentWhitespace(whitespace); }
     public void setNamespaceAware(boolean awareness)
     { _WrappedFactory.setNamespaceAware(awareness); }
-    public void setValidating(boolean validating)
-    { _WrappedFactory.setValidating(validating); }
     
     /**
      * creates a new instance that wraps the installed DocumentBuilderFactory
