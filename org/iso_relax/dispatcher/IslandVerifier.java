@@ -17,61 +17,38 @@ import org.xml.sax.SAXException;
 public interface IslandVerifier extends ContentHandler
 {
 	/**
-	 * substitute for startDocument event.
-	 * 
-	 * This method is called before startElement method
-	 * is called for the top element in the island.
-	 * 
-	 * @param candidateLabels
-	 *		set of labels that the verifier of the parent island
-	 *		is expected for this island.
-	 *		
-	 *		this verifier should try to validate the island by these
-	 *		labels.
+	 * Dispatcher passes itself to IslandVerifier by calling this method
+	 * from Dispatcher.switchVerifier method.
 	 */
-	public void startIsland( Set candidateLabels, String uri ) throws SAXException;
+	void setDispatcher( Dispatcher disp );
 	
 	/**
 	 * substitute for endDocument event.
 	 * 
 	 * This method is called after endElement method is called
 	 * for the top element in the island.
+	 * endDocument method is never called for IslandVerifier.
 	 * 
 	 * @return
-	 *		the callee must return all validated labels.
-	 *		If every candidate fails, return an empty set.
+	 *		the callee must return all validated rules.
+	 *		If every candidate fails, return an empty array.
 	 *		
 	 *		It is the callee's responsibility
 	 *		to report an error. The callee may also recover from error.
 	 * 
 	 *		Never return null.
 	 */
-	public Set endIsland() throws SAXException;
-	
-	/**
-	 * this method is called when a child island is found.
-	 * 
-	 * @return
-	 *		the callee must return all labels that are assignable
-	 *		for the new child element.
-	 *		
-	 *		If there is no such label, then the callee is responsible
-	 *		to issue an error. Also the callee may recover from error.
-	 * 
-	 *		If there is no label after error recovery, the callee can
-	 *		return an empty set to delegate error recovery to Dispatcher.
-	 * 
-	 *		Never return null.
-	 */
-	public Set startChildIsland( String uri ) throws SAXException;
+	public Rule[] endIsland() throws SAXException;
 	
 	/**
 	 * this method is called after verification of the child island
-	 * is completed.
+	 * is completed, instead of endElement method.
 	 * 
+	 * @param uri
+	 *		namespace URI of the child island.
 	 * @param assignedLabel
 	 *		set of labels that were successfully assigned to this child island.
-	 *		when every label was failed, then an empty set is passed.
+	 *		when every label was failed, then an empty array is passed.
 	 */
-	public void endChildIsland( Set assignedLabels ) throws SAXException;
+	public void endChildIsland( String uri, Rule assignedLabels[] ) throws SAXException;
 }
