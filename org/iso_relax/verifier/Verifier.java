@@ -10,18 +10,54 @@ import org.xml.sax.SAXNotSupportedException;
 import org.w3c.dom.Node;
 
 /**
- * Verifier
+ * An instance of this interface can validates documents.
+ * 
+ * <p>
+ * An instance of this interface can be obtained through the
+ * {@link VerifierFactory#newVerifier} method.
+ * Once it is created, an application can use one instance to validate 
+ * multiple documents.
+ * 
+ * <p>
+ * This interface is <b>not thread-safe</b> and <b>not reentrant</b>.
+ * That is, only one thread can use it at any given time, and you can only
+ * validate one document at any given time.
  *
  * @since   Feb. 23, 2001
  * @version Mar.  4, 2001
  * @author  ASAMI, Tomoharu (asami@zeomtech.com)
+ * @author	<a href="mailto:kohsukekawaguchi@yahoo.com">Kohsuke KAWAGUCHI</a>
  */
 public interface Verifier {
+	/**
+	 * a read-only feature that checks whether the implementation supports
+	 * <code>getVerifierHandler</code> method.
+	 * 
+	 * <p>
+	 * Now an verifier implementation is <b>required</b> to support VerifierHandler.
+	 * Therefore an application doesn't need to check this feature.
+	 * 
+	 * @deprecated
+	 */
     String FEATURE_HANDLER = "http://www.iso-relax.org/verifier/handler";
+	
+	/**
+	 * a read-only feature that checks whether the implementation supports
+	 * <code>getVerifierFilter</code> method.
+	 * 
+	 * <p>
+	 * Now an verifier implementation is <b>required</b> to support VerifierFilter.
+	 * Therefore an application doesn't need to check this feature.
+	 * 
+	 * @deprecated
+	 */
     String FEATURE_FILTER = "http://www.iso-relax.org/verifier/filter";
 
     /**
-     * Indicates whether if the feature is supported, or not.
+     * checks whether a feature is supported or not.
+     * 
+     * <p>
+     * This method is modeled after SAX2.
      *
      * @param feature feature name
      */
@@ -29,7 +65,10 @@ public interface Verifier {
         throws SAXNotRecognizedException, SAXNotSupportedException;
 
     /**
-     * Sets feature value
+     * Sets a value to a feature.
+     * 
+     * <p>
+     * This method is modeled after SAX2.
      *
      * @param feature feature name
      * @param value feature value
@@ -38,7 +77,10 @@ public interface Verifier {
         throws SAXNotRecognizedException, SAXNotSupportedException;
 
     /**
-     * Gets property value
+     * gets a property value
+     * 
+     * <p>
+     * This method is modeled after SAX2.
      *
      * @param property property name
      */
@@ -46,7 +88,10 @@ public interface Verifier {
         throws SAXNotRecognizedException, SAXNotSupportedException;
 
     /**
-     * Sets property value
+     * sets a property value
+     * 
+     * <p>
+     * This method is modeled after SAX2.
      *
      * @param property property name
      * @param value property value
@@ -55,52 +100,72 @@ public interface Verifier {
         throws SAXNotRecognizedException, SAXNotSupportedException;
 
     /**
-     * Sets a ErrorHandler to capture verification information.
-     *
-     * @param handler ErrorHandler
+     * sets a <code>ErrorHandler</code> that receives validation errors/warnings.
+     * 
+     * <p>
+     * If no error handler is set explicitly, a verifier implementation should throw
+     * {@link VerifierException} in case of an error.
+     * 
+     * @param handler
+     *		this object will receive errors/warning encountered during the validation.
      */
     void setErrorHandler(ErrorHandler handler);
 
     /**
-     * Sets a EntityResolver to resolve external entity locations.
+     * Sets a <code>EntityResolver</code> to resolve external entity locations.
      *
      * @param handler EntityResolver
      */
     void setEntityResolver(EntityResolver handler);
 
     /**
-     * Verifies against a XML document specified by a URI.
+     * validates an XML document.
      *
-     * @param uri URI of a XML document to verify.
+     * @param uri
+     *		URI of a document.
      */
     boolean verify(String uri) throws SAXException, IOException;
 
     /**
-     * Verifies against a XML document specified by a InputSource.
+     * validates an XML document.
      *
      * @param source InputSource of a XML document to verify.
      */
     boolean verify(InputSource source) throws SAXException, IOException;
 
     /**
-     * Verifies against a XML document represented by DOM nodes.
-     *
-     * @param node root DOM node of a XML document to verify.
+     * validates an XML document.
+     * 
+     * <p>
+     * An implementation is required to accept <code>Document</code> object
+     * as the node parameter. If it also implements partial validation,
+     * it can also accepts things like <code>Element</code>.
+     * 
+     * @param node
+     *		the root DOM node of an XML document.
+     * 
+     * @exception	UnsupportedOperationException
+     *		If the node type of the node parameter is something which
+     *		this implementation does not support.
      */
-    boolean verify(Node node) throws SAXException;
+    boolean verify(Node node)
+		throws SAXException;
 
     /**
      * Gets a VerifierHandler.
-     * VerifierHandler is org.xml.sax.ContentHandler
-     * to verify against SAX events.
+     * 
+     * <p>
+     * you can use the returned <code>VerifierHandler</code> to validate documents
+     * through SAX.
      */
     VerifierHandler getVerifierHandler() throws SAXException;
 
     /**
      * Gets a VerifierFilter.
-     * VerifierFilter is org.xml.sax.XMLFilter
-     * to verify against SAX events.
+     * 
+     * <p>
+     * you can use the returned <code>VerifierHandler</code> to validate documents
+     * through SAX.
      */
     VerifierFilter getVerifierFilter() throws SAXException;
 }
-

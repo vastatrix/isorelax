@@ -4,8 +4,6 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.EntityResolver;
@@ -26,8 +24,6 @@ import jp.gr.xml.relax.sax.DOMSAXProducer;
 import jp.co.swiftinc.relax.verifier.RELAXNormalHandler;
 import jp.co.swiftinc.relax.verifier.NotValidException;
 import jp.co.swiftinc.relax.schema.Grammar;
-import jp.co.swiftinc.relax.schema.SchemaLoader;
-import jp.co.swiftinc.relax.schema.SchemaSyntaxErrorException;
 
 /**
  * SwiftVerifier
@@ -41,57 +37,9 @@ public class SwiftVerifier implements Verifier {
     private XMLReader reader_;
     private ErrorHandler errorHandler_;
 
-    public SwiftVerifier(String uri)
-	throws VerifierConfigurationException, SAXException,
-	       IOException {
-
-	try {
-	    DocumentBuilder builder = _getDocumentBuilder();
-	    Document doc = builder.parse(uri);
-	    _init(SchemaLoader.load(doc, uri));
-	} catch (SchemaSyntaxErrorException e) {
-	    throw (new VerifierException(e));
-	} catch (SAXException e) {
-	    throw (new VerifierException(e));
-	}
-    }
-
-    public SwiftVerifier(InputSource source)
-	throws VerifierConfigurationException, SAXException {
-
-	try {
-	    DocumentBuilder builder = _getDocumentBuilder();
-	    Document doc = builder.parse(source);
-	    _init(SchemaLoader.load(doc, source.getSystemId()));
-	} catch (SchemaSyntaxErrorException e) {
-	    throw (new VerifierException(e));
-	} catch (SAXException e) {
-	    throw (new VerifierException(e));
-	} catch (IOException e) {
-	    throw (new VerifierException(e));
-	}
-    }
-
-    private void _init(Grammar grammar)
-	throws VerifierConfigurationException {
-
-	grammar_ = grammar;
-	reader_ = _getXMLReader();
-    }
-
-    private DocumentBuilder _getDocumentBuilder()
-	throws VerifierConfigurationException {
-
-	try {
-	    DocumentBuilderFactory factory
-		= DocumentBuilderFactory.newInstance();
-	    factory.setNamespaceAware(true);
-	    DocumentBuilder builder = factory.newDocumentBuilder();
-	    builder.setEntityResolver(new RELAXEntityResolver());
-	    return (builder);
-	} catch (ParserConfigurationException e) {
-	    throw (new VerifierConfigurationException(e));
-	} 
+	public SwiftVerifier(Grammar grammar) throws VerifierConfigurationException {
+		grammar_ = grammar;
+		reader_ = _getXMLReader();
     }
 
     private XMLReader _getXMLReader() throws VerifierConfigurationException {
@@ -198,4 +146,3 @@ public class SwiftVerifier implements Verifier {
 	return (new SwiftVerifierFilter(grammar_));
     }
 }
-
