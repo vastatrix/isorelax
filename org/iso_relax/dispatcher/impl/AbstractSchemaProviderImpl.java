@@ -67,3 +67,4 @@ public abstract class AbstractSchemaProviderImpl implements SchemaProvider {
 		return r;
 	}
 }
+

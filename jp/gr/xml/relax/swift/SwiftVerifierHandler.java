@@ -133,3 +133,4 @@ public class SwiftVerifierHandler implements VerifierHandler {
 	handler_.skippedEntity(name);
     }
 }
+

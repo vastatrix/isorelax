@@ -298,3 +298,4 @@ public class XMLMaker implements IDOMVisitor {
 	return (entity.getNotationName() == null);
     }
 }
+

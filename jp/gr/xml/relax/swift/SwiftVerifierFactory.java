@@ -54,3 +54,4 @@ public class SwiftVerifierFactory extends VerifierFactory {
 	return (new SwiftVerifier(source));
     }
 }
+

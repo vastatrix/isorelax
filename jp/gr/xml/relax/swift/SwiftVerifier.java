@@ -4,6 +4,8 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.EntityResolver;
@@ -11,6 +13,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.iso_relax.verifier.Verifier;
 import org.iso_relax.verifier.VerifierHandler;
@@ -18,6 +21,7 @@ import org.iso_relax.verifier.VerifierFilter;
 import org.iso_relax.verifier.VerifierConfigurationException;
 import org.iso_relax.verifier.VerifierException;
 import jp.gr.xml.relax.dom.DOMVisitorException;
+import jp.gr.xml.relax.sax.RELAXEntityResolver;
 import jp.gr.xml.relax.sax.DOMSAXProducer;
 import jp.co.swiftinc.relax.verifier.RELAXNormalHandler;
 import jp.co.swiftinc.relax.verifier.NotValidException;
@@ -29,26 +33,23 @@ import jp.co.swiftinc.relax.schema.SchemaSyntaxErrorException;
  * SwiftVerifier
  *
  * @since   Feb. 23, 2001
- * @version Mar.  4, 2001
+ * @version May. 28, 2001
  * @author  ASAMI, Tomoharu (asami@zeomtech.com)
  */
 public class SwiftVerifier implements Verifier {
     private Grammar grammar_;
     private XMLReader reader_;
+    private ErrorHandler errorHandler_;
 
     public SwiftVerifier(String uri)
 	throws VerifierConfigurationException, SAXException,
 	       IOException {
 
 	try {
-	    _init(SchemaLoader.load(uri));
+	    DocumentBuilder builder = _getDocumentBuilder();
+	    Document doc = builder.parse(uri);
+	    _init(SchemaLoader.load(doc, uri));
 	} catch (SchemaSyntaxErrorException e) {
-	    throw (new VerifierException(e));
-	} catch (ClassNotFoundException e) {
-	    throw (new VerifierException(e));
-	} catch (IllegalAccessException e) {
-	    throw (new VerifierException(e));
-	} catch (InstantiationException e) {
 	    throw (new VerifierException(e));
 	} catch (SAXException e) {
 	    throw (new VerifierException(e));
@@ -59,14 +60,10 @@ public class SwiftVerifier implements Verifier {
 	throws VerifierConfigurationException, SAXException {
 
 	try {
-	    _init(SchemaLoader.load(source));
+	    DocumentBuilder builder = _getDocumentBuilder();
+	    Document doc = builder.parse(source);
+	    _init(SchemaLoader.load(doc, source.getSystemId()));
 	} catch (SchemaSyntaxErrorException e) {
-	    throw (new VerifierException(e));
-	} catch (ClassNotFoundException e) {
-	    throw (new VerifierException(e));
-	} catch (IllegalAccessException e) {
-	    throw (new VerifierException(e));
-	} catch (InstantiationException e) {
 	    throw (new VerifierException(e));
 	} catch (SAXException e) {
 	    throw (new VerifierException(e));
@@ -80,6 +77,21 @@ public class SwiftVerifier implements Verifier {
 
 	grammar_ = grammar;
 	reader_ = _getXMLReader();
+    }
+
+    private DocumentBuilder _getDocumentBuilder()
+	throws VerifierConfigurationException {
+
+	try {
+	    DocumentBuilderFactory factory
+		= DocumentBuilderFactory.newInstance();
+	    factory.setNamespaceAware(true);
+	    DocumentBuilder builder = factory.newDocumentBuilder();
+	    builder.setEntityResolver(new RELAXEntityResolver());
+	    return (builder);
+	} catch (ParserConfigurationException e) {
+	    throw (new VerifierConfigurationException(e));
+	} 
     }
 
     private XMLReader _getXMLReader() throws VerifierConfigurationException {
@@ -126,6 +138,7 @@ public class SwiftVerifier implements Verifier {
     }
 
     public void setErrorHandler(ErrorHandler handler) {
+	errorHandler_ = handler;
 	reader_.setErrorHandler(handler);
     }
 
@@ -135,6 +148,9 @@ public class SwiftVerifier implements Verifier {
 
     public boolean verify(String uri) throws SAXException, IOException {
 	RELAXNormalHandler verifier = new RELAXNormalHandler(grammar_);
+	if (errorHandler_ != null) {
+	    verifier.setErrorHandler(new SwiftErrorHandler(errorHandler_));
+	}
 	reader_.setContentHandler(verifier);
 	try {
 	    reader_.parse(uri);
@@ -182,3 +198,4 @@ public class SwiftVerifier implements Verifier {
 	return (new SwiftVerifierFilter(grammar_));
     }
 }
+

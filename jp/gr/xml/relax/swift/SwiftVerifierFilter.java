@@ -103,3 +103,4 @@ public class SwiftVerifierFilter extends XMLFilterImpl
 	super.skippedEntity(name);
     }
 }
+

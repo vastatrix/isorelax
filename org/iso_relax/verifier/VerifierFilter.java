@@ -12,3 +12,4 @@ import org.xml.sax.XMLFilter;
 public interface VerifierFilter extends XMLFilter {
     boolean isValid() throws IllegalStateException;
 }
+

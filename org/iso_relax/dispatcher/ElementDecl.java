@@ -67,3 +67,4 @@ public interface ElementDecl {
 	Object getProperty( String propertyName )
 		throws SAXNotRecognizedException,SAXNotSupportedException;
 }
+

@@ -103,3 +103,4 @@ public class IgnoredSchema implements IslandSchema
 	public void bind( SchemaProvider provider, ErrorHandler handler ) {}
 	
 }
+

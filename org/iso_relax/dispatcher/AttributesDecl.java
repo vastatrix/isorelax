@@ -64,3 +64,4 @@ public interface AttributesDecl {
 	Object getProperty( String propertyName )
 		throws SAXNotRecognizedException,SAXNotSupportedException;
 }
+

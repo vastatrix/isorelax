@@ -11,7 +11,7 @@ import org.xml.sax.SAXNotSupportedException;
  * VerifierFactory
  *
  * @since   Feb. 23, 2001
- * @version Mar.  4, 2001
+ * @version Apr. 17, 2001
  * @author  ASAMI, Tomoharu (asami@zeomtech.com)
  */
 public abstract class VerifierFactory {
@@ -22,6 +22,21 @@ public abstract class VerifierFactory {
 	throws VerifierConfigurationException {
 
 	return (new jp.gr.xml.relax.swift.SwiftVerifierFactory());
+    }
+
+    /**
+     * Creates a new instance of a VerifierFactory by schema type.
+     */
+    public static VerifierFactory newInstance(String schemaType)
+	throws VerifierConfigurationException {
+
+	if ("relax".equals(schemaType)) {
+	    return (new jp.gr.xml.relax.swift.SwiftVerifierFactory());
+	} else if ("dtd".equals(schemaType)) {
+	    throw (new VerifierConfigurationException(schemaType));
+	} else {
+	    throw (new VerifierConfigurationException(schemaType));
+	}
     }
 
     /**
@@ -91,3 +106,4 @@ public abstract class VerifierFactory {
     public abstract void setProperty(String property, Object value)
         throws SAXNotRecognizedException, SAXNotSupportedException;
 }
+

@@ -245,3 +245,4 @@ public class DispatcherImpl implements org.iso_relax.dispatcher.Dispatcher
 		}
 	}
 }
+

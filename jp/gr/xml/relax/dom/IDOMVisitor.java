@@ -38,3 +38,4 @@ public interface IDOMVisitor {
     void leave(Node node) throws DOMVisitorException;
 }
 
+

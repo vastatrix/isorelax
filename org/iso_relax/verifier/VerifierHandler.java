@@ -12,3 +12,4 @@ import org.xml.sax.ContentHandler;
 public interface VerifierHandler extends ContentHandler {
     boolean isValid() throws IllegalStateException;
 }
+

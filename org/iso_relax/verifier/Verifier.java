@@ -103,3 +103,4 @@ public interface Verifier {
      */
     VerifierFilter getVerifierFilter() throws SAXException;
 }
+
